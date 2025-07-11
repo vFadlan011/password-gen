@@ -1,0 +1,189 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'io.github.fvarrui:javapackager:1.7.5'
+  }
+}
+
+plugins {
+  id 'java'
+  id 'application'
+  id 'org.jetbrains.kotlin.jvm' version '2.1.0'
+  id 'org.javamodularity.moduleplugin' version '1.8.12'
+  id 'org.openjfx.javafxplugin' version '0.0.13'
+  id 'org.beryx.jlink' version '3.0.1'
+}
+
+group 'me.fadlan'
+version '1.0.0'
+
+repositories {
+  mavenCentral()
+  google()
+  gradlePluginPortal()
+  maven {
+    url 'https://repo1.maven.org/maven2'
+  }
+}
+ext {
+  junitVersion = '5.10.0'
+}
+
+dependencies {
+  implementation 'org.jdom:jdom2:2.0.6'
+  implementation 'org.ow2.asm:asm:6.0'
+  implementation 'org.ow2.asm:asm-commons:6.0'
+  implementation 'commons-io:commons-io:2.4'
+  implementation 'org.apache.ant:ant:1.9.4'
+  implementation 'org.codehaus.plexus:plexus-utils:2.0.6'
+  implementation('org.controlsfx:controlsfx:11.1.2')
+  implementation('net.synedra:validatorfx:0.4.0') {
+    exclude(group: 'org.openjfx')
+  }
+  implementation("com.google.zxing:core:3.5.3")
+  implementation("com.google.zxing:javase:3.5.3")
+  implementation("com.google.code.gson:gson:2.11.0")
+
+  testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+}
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+  mainClassName = 'me.fadlan.passwordgen.PasswordGenApplication'
+}
+
+application {
+  mainModule = 'me.fadlan.passwordgen'
+  mainClass = 'me.fadlan.passwordgen.PasswordGenApplication'
+}
+
+jar {
+  manifest {
+    attributes(
+            'Main-Class': 'me.fadlan.passwordgen.PasswordGenApplication',
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor': 'Fadlan Abduh'
+    )
+  }
+}
+
+kotlin {
+  jvmToolchain( 21 )
+}
+
+javafx {
+  version = '21'
+  modules = ['javafx.controls', 'javafx.fxml', 'javafx.base', 'javafx.graphics', 'javafx.swing']
+}
+
+test {
+useJUnitPlatform()}
+
+jlink {
+  targetPlatform("linux") { // linux x64
+    println 'Downloading jdk for linux x64'
+    jdkHome = jdkDownload("https://is3.cloudhost.id/jdk-javafx-bundle/21/jdk21-linux_x64.tar.gz") {
+    archiveName = "linux-x64-jdk21"
+  }
+}
+
+  targetPlatform("mac") { // mac x64
+    println 'Downloading jdk for mac x64'
+    jdkHome = jdkDownload("https://is3.cloudhost.id/jdk-javafx-bundle/21/jdk21-macos_x64.tar.gz") {
+      archiveName = "mac-x64-jdk21"
+    }
+  }
+
+  targetPlatform("mac-aarch64") { // mac arm
+    println 'Downloading jdk for mac arm'
+    jdkHome = jdkDownload("https://is3.cloudhost.id/jdk-javafx-bundle/21/jdk21-macos_aarch64.tar.gz") {
+      archiveName = "mac-aarch64-jdk21"
+    }
+  }
+
+  targetPlatform("win") { // win x64
+    println 'Downloading jdk for win x64'
+    jdkHome = jdkDownload("https://is3.cloudhost.id/jdk-javafx-bundle/21/jdk21-windows_x64.zip") {
+      archiveName = "windows-x64-jdk21"
+    }
+  }
+
+  imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
+  options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+  launcher {
+    name = 'PassGen'
+  }
+  group = 'distribution'
+
+  jpackage {
+    imageOutputDir = file("$buildDir/distributions/image") as File
+    installerOutputDir = file("$buildDir/distributions/installer") as File
+
+    imageOptions = [
+            '--name', "PassGen",
+    ]
+    installerOptions = [
+            '--vendor', 'Fadlan Abduh',
+    ]
+    appVersion = project.version
+    resourceDir = file("src/main/resources") as File
+
+    def currentOs = org.gradle.internal.os.OperatingSystem.current()
+
+    if(currentOs.windows) {
+      targetPlatformName = "win"
+      installerType = "msi"
+      imageOptions += ['--icon', "src/main/resources/icons/passgen.ico"]
+      installerOptions += ['--win-per-user-install', '--win-dir-chooser', '--win-menu', '--win-shortcut']
+    } else if (currentOs.linux) {
+      targetPlatformName = "linux"
+      installerType = "deb"
+      imageOptions += ['--icon', "src/main/resources/icons/passgen.png"]
+      installerOptions += ['--linux-package-name', 'password-gen', '--linux-shortcut']
+    } else if (currentOs.macOsX) {
+      targetPlatformName = "mac"
+      installerType = "dmg"
+      installerOptions += ['--mac-package-name', 'password-gen']
+    }
+
+    def arch = System.getProperty("os.arch")
+    installerName = "PassGen_$targetPlatformName-${arch}_v"
+  }
+}
+
+jlinkZip {
+  group = 'distribution'
+}
+
+
+tasks.register('packImage') {
+  dependsOn jpackageImage
+  doLast {
+    def currentOs = org.gradle.internal.os.OperatingSystem.current()
+    def targetPlatformName = currentOs.windows ? "win" : currentOs.linux ? "linux" : "mac"
+    def arch = System.getProperty("os.arch")
+    def archiveExt = currentOs.windows ? "zip" : "tar.gz"
+    def archiveFileName = "passgen_${targetPlatformName}-${arch}-portable_v${project.version}.${archiveExt}"
+
+    def imageDir = file("$buildDir/distributions/image/PassGen")
+    def outputDir = file("$buildDir/distributions/image")
+    outputDir.mkdirs()
+
+    if (currentOs.windows) {
+      ant.zip(destfile: "${outputDir}/${archiveFileName}", basedir: imageDir)
+    } else if (currentOs.linux) {
+      ant.tar(destfile: "${outputDir}/${archiveFileName}", compression: "gzip") {
+        tarfileset(dir: imageDir)
+      }
+    } else if (currentOs.macOsX) {
+      imageDir = file("$buildDir/distributions/image/PassGen.app")
+      ant.tar(destfile: "${outputDir}/${archiveFileName}", compression: "gzip") {
+        tarfileset(dir: imageDir)
+      }
+    }
+  }
+}

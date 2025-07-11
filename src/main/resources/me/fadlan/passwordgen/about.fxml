@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="480.0" style="-fx-padding: 16px;" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Password Generator">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextArea editable="false" prefHeight="134.0" prefWidth="448.0" text="This app prioritizes your online safety by letting you create strong passwords &#10;entirely offline. No internet connection means no risk of third-party interception. &#10;You're in complete control.&#10;&#10;Our app generates QR codes unique to your passwords. These codes can only be &#10;scanned by our app, offering an extra layer of security. Print the QR code for &#10;ultimate protection - ink and paper can't be hacked!" />
+   </children>
+</VBox>

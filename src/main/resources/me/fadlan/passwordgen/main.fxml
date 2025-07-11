@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.fadlan.passwordgen.MainViewController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="24.0" prefWidth="200.0" style="-fx-spacing: 4; -fx-background-color: #e5e5e5;">
+         <children>
+            <Button fx:id="btnScanQR" mnemonicParsing="false" onAction="#btnScanQROnClick" style="-fx-background-radius: 0; -fx-opacity: 0.8;" text="Scan QR" />
+            <Button fx:id="btnScanAbout" mnemonicParsing="false" onAction="#btnAboutOnClick" style="-fx-background-radius: 0; -fx-opacity: 0.8;" text="About" />
+         </children>
+      </HBox>
+      <HBox prefHeight="415.0" prefWidth="640.0">
+         <children>
+            <VBox prefHeight="400.0" prefWidth="320.0" style="-fx-padding: 16px; -fx-spacing: 4px;">
+               <children>
+                  <Label text="Password Generator">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label text="Password Length:" />
+                  <HBox alignment="CENTER" prefHeight="32.0" prefWidth="288.0">
+                     <children>
+                        <Slider fx:id="sliderPasswordLength" accessibleText="Password length" majorTickUnit="10.0" max="120.0" min="8.0" minorTickCount="1" onDragDetected="#sliderPasswordLengthOnChange" onDragOver="#sliderPasswordLengthOnChange" onInputMethodTextChanged="#sliderPasswordLengthOnChange" onKeyReleased="#sliderPasswordLengthOnChange" onMouseDragOver="#sliderPasswordLengthOnChange" onMouseDragReleased="#sliderPasswordLengthOnChange" onMouseDragged="#sliderPasswordLengthOnChange" onMouseReleased="#sliderPasswordLengthOnChange" onScroll="#sliderPasswordLengthOnChange" onTouchMoved="#sliderPasswordLengthOnChange" onTouchReleased="#sliderPasswordLengthOnChange" prefHeight="14.0" prefWidth="230.0" value="8.0">
+                           <tooltip>
+                              <Tooltip text="Password length" />
+                           </tooltip>
+                        </Slider>
+                        <TextField fx:id="txtPasswordLength" accessibleText="Password length" onAction="#txtPasswordLengthOnAction" prefHeight="8.0" prefWidth="37.0" text="8" />
+                     </children>
+                  </HBox>
+                  <TitledPane animated="false" collapsible="false" prefHeight="148.0" prefWidth="270.0" text="Advanced Options">
+                     <content>
+                        <Pane prefHeight="121.0" prefWidth="288.0">
+                           <children>
+                              <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="26.0" prefWidth="270.0" style="-fx-hgap: 8;">
+                                 <children>
+                                    <CheckBox fx:id="cbxUseUppercase" accessibleText="Include uppercase letters" mnemonicParsing="false" onAction="#charTypeOnChange" selected="true" text="ABC">
+                                       <tooltip>
+                                          <Tooltip text="Use uppercase letters" />
+                                       </tooltip>
+                                    </CheckBox>
+                                    <CheckBox fx:id="cbxUseLowercase" accessibleText="Include lowercase letters" mnemonicParsing="false" onAction="#charTypeOnChange" selected="true" text="abc">
+                                       <tooltip>
+                                          <Tooltip text="Use lowercase letters" />
+                                       </tooltip>
+                                    </CheckBox>
+                                    <CheckBox fx:id="cbxUseNumber" accessibleText="Include numbers" mnemonicParsing="false" onAction="#charTypeOnChange" selected="true" text="123">
+                                       <tooltip>
+                                          <Tooltip text="Use numbers" />
+                                       </tooltip>
+                                    </CheckBox>
+                                    <CheckBox fx:id="cbxUseSpecial" accessibleText="Include special characters" mnemonicParsing="false" onAction="#charTypeOnChange" selected="true" text="\@#\">
+                                       <tooltip>
+                                          <Tooltip text="Use special characters" />
+                                       </tooltip>
+                                    </CheckBox>
+                                 </children>
+                              </FlowPane>
+                              <CheckBox fx:id="cbxAddReadableWords" accessibleText="Enabling this will make your password readable" layoutX="18.0" layoutY="35.0" mnemonicParsing="false" onAction="#cbxUseReadableOnChange" text="Add Readable Words">
+                                 <tooltip>
+                                    <Tooltip text="Make your password more readable" />
+                                 </tooltip>
+                              </CheckBox>
+                              <CheckBox fx:id="cbxAddIndonesianWords" accessibleText="Use Bahasa Indonesia when  Use Readable Words is enabled" disable="true" layoutX="18.0" layoutY="64.0" mnemonicParsing="false" text="Use Bahasa Indonesia">
+                                 <tooltip>
+                                    <Tooltip text="Use Bahasa Indonesia" />
+                                 </tooltip>
+                              </CheckBox>
+                              <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutY="95.0" prefHeight="26.0" prefWidth="270.0" style="-fx-hgap: 16;">
+                                 <children>
+                                    <RadioButton fx:id="rdbClassicMethod" mnemonicParsing="false" selected="true" text="Classic" />
+                                    <RadioButton fx:id="rdbMarkovMethod" mnemonicParsing="false" text="Markov Chain" />
+                                 </children>
+                              </FlowPane>
+                           </children>
+                        </Pane>
+                     </content>
+                     <tooltip>
+                        <Tooltip text="Select things to use in your password" />
+                     </tooltip>
+                  </TitledPane>
+                  <Button fx:id="btnGeneratePassword" accessibleText="Generate Password" mnemonicParsing="false" onAction="#btnGeneratePasswordOnClick" prefHeight="24.0" prefWidth="288.0" text="Generate Password" />
+                  <Label prefHeight="25.0" prefWidth="116.0" text="Your Password:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <FlowPane fx:id="contPassword" alignment="CENTER" prefHeight="37.0" prefWidth="294.0" style="-fx-hgap: 4px;">
+                     <children>
+                        <PasswordField fx:id="passGeneratedPassword" onKeyPressed="#generatedPasswordOnChange" prefHeight="25.0" prefWidth="235.0" promptText="Password" visible="false" />
+                        <TextField fx:id="txtGeneratedPassword" onKeyPressed="#generatedPasswordOnChange" prefHeight="25.0" prefWidth="235.0" />
+                        <Button fx:id="btnHidePassword" accessibleText="Copy Password" mnemonicParsing="false" onAction="#btnHidePasswordOnClick" prefHeight="25.0" prefWidth="45.0" text="*">
+                           <font>
+                              <Font name="JetBrains Mono Regular" size="11.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </FlowPane>
+                  <Button fx:id="btnCopy" accessibleText="Copy Password" mnemonicParsing="false" onAction="#btnCopyOnClick" prefHeight="25.0" prefWidth="288.0" text="Copy">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip fx:id="tooltipBtnCopy" text="Please, generate a password first" />
+                     </tooltip>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="320.0" style="-fx-padding: 16px; -fx-spacing: 4;">
+               <children>
+                  <Label text="QR Generator">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label text="Encryption Key:" />
+                  <FlowPane fx:id="contEncryptionKey" alignment="CENTER" prefHeight="37.0" prefWidth="294.0" style="-fx-hgap: 4px;">
+                     <children>
+                        <TextField fx:id="txtEncryptionKey" onKeyPressed="#encryptionKeyOnChange" prefHeight="25.0" prefWidth="235.0" promptText="Encryption Key" visible="false" />
+                        <PasswordField fx:id="passEncryptionKey" onKeyPressed="#encryptionKeyOnChange" prefHeight="25.0" prefWidth="235.0" promptText="Encryption Key" />
+                        <Button fx:id="btnHideEncryptionKey" accessibleText="Copy Password" mnemonicParsing="false" onAction="#btnHideEncryptionKeyOnClick" prefHeight="25.0" prefWidth="45.0" text="*">
+                           <font>
+                              <Font name="JetBrains Mono Regular" size="11.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </FlowPane>
+                  <Button fx:id="btnGenerateQR" accessibleText="Generate QR Code" mnemonicParsing="false" onAction="#btnGenerateQROnClick" prefHeight="25.0" prefWidth="288.0" text="Generate QR">
+                     <tooltip>
+                        <Tooltip fx:id="tooltipBtnGenerateQR" text="Please, generate a password first" />
+                     </tooltip>
+                  </Button>
+                  <VBox alignment="CENTER" prefHeight="268.0" prefWidth="288.0" style="-fx-spacing: 8px;">
+                     <children>
+                        <ImageView fx:id="imgQR" fitHeight="218.0" fitWidth="212.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icon-hires.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="btnSave" accessibleText="Save generated QR Code to .png file" mnemonicParsing="false" onAction="#btnSaveOnClick" prefHeight="25.0" prefWidth="227.0" text="Save">
+                           <tooltip>
+                              <Tooltip fx:id="tooltipBtnSave" text="Please, generate QR first" />
+                           </tooltip>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

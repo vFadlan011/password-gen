@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.fadlan.passwordgen.ScanViewController">
+   <children>
+      <VBox prefHeight="225.0" prefWidth="320.0" style="-fx-padding: 16px;">
+         <children>
+            <Label text="Scan QR Code">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="165.0" prefWidth="288.0">
+               <children>
+                  <ImageView fx:id="imgQR" fitHeight="129.0" fitWidth="129.0" onKeyPressed="#sceneOnKeyPressed" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../xpr/password-gen/src/main/resources/me/fadlan/passwordgen/icon-hires.png" />
+                     </image>
+                  </ImageView>
+                  <VBox alignment="CENTER_RIGHT" onKeyPressed="#sceneOnKeyPressed" prefHeight="133.0" prefWidth="163.0" style="-fx-padding: 4px; -fx-spacing: 4px;">
+                     <children>
+                        <Label text="QR Code Image File" textAlignment="RIGHT" />
+                        <TextField fx:id="txtImageFile" editable="false" onKeyPressed="#sceneOnKeyPressed" prefHeight="25.0" prefWidth="150.0" />
+                        <Button fx:id="btnOpenFile" mnemonicParsing="false" onAction="#btnOpenFileOnClick" prefHeight="25.0" prefWidth="150.0" text="Open" />
+                        <Button fx:id="btnScan" mnemonicParsing="false" onAction="#btnScanOnClick" prefHeight="25.0" prefWidth="150.0" text="Scan" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox prefHeight="264.0" prefWidth="320.0" style="-fx-padding: 16px; -fx-spacing: 4px;">
+         <children>
+            <Label text="Encrypted" />
+            <TextArea fx:id="txtEncrypted" editable="false" prefHeight="51.0" prefWidth="288.0" />
+            <FlowPane fx:id="contDecryptionKey" alignment="CENTER" prefHeight="37.0" prefWidth="294.0" style="-fx-hgap: 4px;">
+               <children>
+                  <TextField fx:id="txtDecryptionKey" onAction="#decryptionKeyOnChange" onInputMethodTextChanged="#decryptionKeyOnChange" onKeyPressed="#decryptionKeyOnChange" prefHeight="25.0" prefWidth="235.0" promptText="Decryption Key" visible="false" />
+                  <PasswordField fx:id="passDecryptionKey" onAction="#decryptionKeyOnChange" onInputMethodTextChanged="#decryptionKeyOnChange" onKeyPressed="#decryptionKeyOnChange" prefHeight="25.0" prefWidth="235.0" promptText="Decryption Key" />
+                  <Button fx:id="btnHideDecryptionKey" accessibleText="Copy Password" mnemonicParsing="false" onAction="#btnHideDecryptionKeyOnClick" prefHeight="25.0" prefWidth="45.0" text="*">
+                     <font>
+                        <Font name="JetBrains Mono Regular" size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+            </FlowPane>
+            <Button fx:id="btnDecrypt" accessibleText="Copy Password" mnemonicParsing="false" onAction="#btnDecryptOnClick" prefHeight="25.0" prefWidth="282.0" text="Decrypt">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Label text="Decrypted" />
+            <FlowPane fx:id="contPassword" alignment="CENTER" prefHeight="37.0" prefWidth="294.0" style="-fx-hgap: 4px;">
+               <children>
+                  <PasswordField fx:id="passPassword" editable="false" prefHeight="25.0" prefWidth="235.0" promptText="Password" visible="false" />
+                  <TextField fx:id="txtPassword" editable="false" prefHeight="25.0" prefWidth="235.0" promptText="Password" />
+                  <Button fx:id="btnHidePassword" accessibleText="Copy Password" mnemonicParsing="false" onAction="#btnHidePasswordOnClick" prefHeight="25.0" prefWidth="45.0" text="*">
+                     <font>
+                        <Font name="JetBrains Mono Regular" size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+            </FlowPane>
+            <Button fx:id="btnCopy" accessibleText="Copy Password" mnemonicParsing="false" onAction="#btnCopyOnClick" prefHeight="25.0" prefWidth="292.0" text="Copy">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</VBox>

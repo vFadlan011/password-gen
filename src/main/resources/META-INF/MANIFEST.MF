@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Main-Class: me.fadlan.passwordgen.PasswordGenApplication
+Class-Path: controlsfx-11.1.2.jar javafx-swing-22-ea+11-win.jar jcommand
+ er-1.82.jar core-3.5.3.jar annotations-13.0.jar jai-imageio-core-1.4.0.
+ jar kotlin-stdlib-1.8.22.jar javafx-graphics-22-ea+11.jar validatorfx-0
+ .4.0.jar javafx-graphics-22-ea+11-win.jar javafx-base-22-ea+11-win.jar 
+ javafx-controls-22-ea+11-win.jar kotlin-stdlib-common-1.8.22.jar javase
+ -3.5.3.jar javafx-fxml-22-ea+11-win.jar kotlin-stdlib-jdk7-1.8.22.jar k
+ otlin-stdlib-jdk8-1.8.22.jar javafx-controls-22-ea+11.jar javafx-base-2
+ 2-ea+11.jar gson-2.7.jar bcprov-jdk16-1.45.jar
+
